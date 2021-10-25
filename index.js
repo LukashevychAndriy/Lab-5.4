@@ -1,26 +1,57 @@
-const xp = +prompt('Введіть значення параметру хp'); // Запрошуємо ввід параметру x початкового
-const xk = +prompt('Введіть значення параметру хk'); // Запрошуємо ввід параметру x кінцевого
-const dx = +prompt('Введіть значення параметру dx'); // Запрошуємо ввід параметру кроку
-const eps = +prompt('Введіть значення параметру eps'); // Запрошуємо ввід параметру точності
+const N = +prompt('Введіть значення параметру N'); // Запрошуємо ввід вхідного параметру N
 
-console.log('|\tx\t\t|\tarctg(x)\t\t|\tS\t\t\t\t|\tn\t|');
+function sum0(N) {
+  let sum = 0;
 
-for (let x = xp; x <= xk && x < -1; x += dx) {
-  
-  let a = -1 / x;
-  let S = a;
-  let n = 0;
+  for (let i = N; i <= 22; i++) {
+    sum += (Math.sqrt(Math.pow(i, 2) + Math.pow(N, 2))) / i;
+  }
 
-  do {
-    n++;
-
-    let R = (1 - 2 * n) / (2 * n * x * x + x * x);
-    
-    a *= R;
-    S += a;
-  } while (Math.abs(a) >= eps);
-
-  let result = -Math.PI / 2 + S;
-
-  console.log(`|\t${x.toFixed(2)}\t|\t${Math.atan(x).toFixed(10)}\t|\t${result.toFixed(10)}\t|\t${n}\t|`);
+  return sum;
 }
+
+function sum1(N, i) {
+  if (i > 22) {
+    return 0;
+  } else {
+    return (Math.sqrt(Math.pow(i, 2) + Math.pow(N, 2))) / i + sum1(N, ++i);
+  }
+}
+
+function sum2(N, i) {
+  if (i < N) {
+    return 0;
+  } else {
+    return (Math.sqrt(Math.pow(i, 2) + Math.pow(N, 2))) / i + sum2(N, --i);
+  }
+}
+
+function sum3(N, i, t) {
+  t = (Math.sqrt(Math.pow(i, 2) + Math.pow(N, 2))) / i + t;
+
+  if (i >= 22) {
+    return t;
+  } else {
+    return sum3(N, ++i, t);
+  }
+}
+
+function sum4(N, i, t) {
+  t = (Math.sqrt(Math.pow(i, 2) + Math.pow(N, 2))) / i + t;
+
+  if (N >= i) {
+    return t;
+  } else {
+    return sum4(N, --i, t);
+  }
+}
+
+console.log(sum0(N));
+
+console.log(sum1(N, N));
+
+console.log(sum2(N, 22));
+
+console.log(sum3(N, N, 0));
+
+console.log(sum4(N, 22, 0));
